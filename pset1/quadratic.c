@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-int main(){
+int main() {
     // Get input for a
     int a;
     do {

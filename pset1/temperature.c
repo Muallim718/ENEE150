@@ -9,7 +9,7 @@ void print_fahrenheit_spaces();
 int celsius_spaces = 0;
 int fahrenheit_spaces = 0;
 
-int main(){
+int main() {
     // Starting temperature in celsius
     float celsius_temp = 100;
     // Initialize fahrenheit temperature
@@ -61,6 +61,8 @@ int main(){
             }
         }
     }
+
+    return 0;
 }
 
 void print_celsius_spaces() {
