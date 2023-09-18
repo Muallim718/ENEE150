@@ -4,12 +4,11 @@
 
 int quit = 0;
 
-void reverse_string(char* string, int str_length);
 void prompt_string();
 
 int main() {
     printf("Start of the program. \n");
-    printf("Enter text to be reversed, enter EOF to end the program. \n");
+    printf("Enter EOF to end the program. \n");
     // Continue prompting user for a line to be reversed until EOF is entered
     while (quit == 0) {
         prompt_string();
@@ -50,23 +49,16 @@ void prompt_string() {
     for (int i = 0; i < string_length; i++) {
         resized_string[i] = string[i];
     }
-    // Reverse the string
-    reverse_string(resized_string, string_length);
-    // Print the reversed string
-    printf("Reversed string: ");
-    for (int i = 0; i < string_length; i++) {
-        printf("%c", resized_string[i]);
-    }
-    printf("\n");
-}
-
-// Reverse string function
-void reverse_string(char* string, int str_length) {
-    // Swap the elements
-    for (int i = 0; i < str_length / 2; i++) {
-        char first = string[i];
-        char last = string[str_length - i - 1];
-        string[str_length - i - 1] = first;
-        string[i] = last;
+    // Print the string containing thirty characters or less
+    if (string_length <= 30) {
+        printf("Input text contained thirty characters or less.\n");
+        printf("Input text will be printed: ");
+        for (int i = 0; i < string_length; i++) {
+            printf("%c", resized_string[i]);
+        }
+        printf("\n");
+    } else {
+        printf("Input text contained more than thirty characters. \n");
+        printf("Input text will not be printed. \n");
     }
 }
