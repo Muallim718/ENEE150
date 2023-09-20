@@ -50,15 +50,15 @@ void prompt_string() {
         resized_string[i] = string[i];
     }
     // Print the string containing thirty characters or less
-    if (string_length <= 30) {
-        printf("Input text contained thirty characters or less.\n");
-        printf("Input text will be printed: ");
+    if (string_length > 30) {
+        printf("Input text contained more than thirty characters.\n");
+        printf("Input text will be printed.\n");
         for (int i = 0; i < string_length; i++) {
             printf("%c", resized_string[i]);
         }
         printf("\n");
     } else {
-        printf("Input text contained more than thirty characters. \n");
-        printf("Input text will not be printed. \n");
+        printf("Input text contained thirty characters or less.\n");
+        printf("Input text will not be printed.\n");
     }
 }
