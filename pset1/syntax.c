@@ -1,19 +1,39 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+// Initialize parenthesis variables
+bool parenthesis_start[100] = {false};
+bool parenthesis_end[100] = {false};
+bool parenthesis_unbalanced = false;
+int parenthesis_count = 0;
+int parenthesis_start_count = 0;
+int parenthesis_end_count = 0;
+// Initialize curly brace variables
+bool brace_start[100] = {false};
+bool brace_end[100] = {false};
+bool brace_unbalanced = false;
+int brace_count = 0;
+int brace_start_count = 0;
+int brace_end_count = 0;
+// Initialize bracket variables
+bool bracket_start[100] = {false};
+bool bracket_end[100] = {false};
+bool bracket_unbalanced = false;
+int bracket_count = 0;
+int bracket_start_count = 0;
+int bracket_end_count = 0;
+
 int quit = 0;
-void prompt_string();
+void check_syntax();
+void check_string(char input_char);
 
 int main() {
-    printf("Start of the program WOW.\n");
-    char input_text[1000];
-    scanf("%s", input_text);
-
+    printf("WOW\n");
+    // printf("Enter text, enter EOF to end the program. \n");
     /*
-    printf("Enter text, enter EOF to end the program. \n");
-    // Continue prompting user for a line to be reversed until EOF is entered
+    // Continue checking user for a line to be reversed until EOF is entered
     while (quit == 0) {
-        prompt_string();
+        check_syntax();
     }
     printf("EOF character entered, exiting program now.\n");
     */
@@ -21,84 +41,22 @@ int main() {
     return 0;
 }
 
-void prompt_string() {
-    // Initialize parenthesis variables
-    bool parenthesis_start[100] = {false};
-    bool parenthesis_end[100] = {false};
-    bool parenthesis_unbalanced = false;
-    int parenthesis_count = 0;
-    int parenthesis_start_count = 0;
-    int parenthesis_end_count = 0;
-    // Initialize curly brace variables
-    bool brace_start[100] = {false};
-    bool brace_end[100] = {false};
-    bool brace_unbalanced = false;
-    int brace_count = 0;
-    int brace_start_count = 0;
-    int brace_end_count = 0;
-    // Initialize bracket variables
-    bool bracket_start[100] = {false};
-    bool bracket_end[100] = {false};
-    bool bracket_unbalanced = false;
-    int bracket_count = 0;
-    int bracket_start_count = 0;
-    int bracket_end_count = 0;
+void check_syntax() {
 
     // Initialize static char array 
-    char input_text[1000];
     int input_char;
-    int check_eof;
     printf("Enter string: ");
-    // Initialize string length
-    int string_length = 0;
-
-    /*
-    // If user inputs EOF
-    if ((check_eof = fgetc(stdin)) == EOF) {
-        // Exit the function and while loop
-        quit = 1;
-        printf("\n");
-        return;
-    }
-    // If not EOF, store the first character from the stream
-    input_text[string_length++] = check_eof;
-    */
-    scanf("%s", input_text);
-
-    return;
 
     // While the user inputs the text stream
     while ((input_char = fgetc(stdin)) != '\n') {
-        if (parenthesis_end[parenthesis_count] == true 
-            && parenthesis_start[parenthesis_count] == false) {
-            parenthesis_unbalanced = true;
-        } else if (brace_end[brace_count] == true
-            && brace_start[brace_count] == false) {
-            brace_unbalanced = true;
-        } else if (bracket_end[bracket_count] == true
-            && bracket_start[bracket_count] == false) {
-            bracket_unbalanced = true;
+        // If user inputs EOF
+        if ((input_char = fgetc(stdin)) == EOF) {
+        // Exit the function and while loop
+            quit = 1;
+            printf("\n");
+            return;
         }
-
-        if (input_char == '(') {
-            parenthesis_start[parenthesis_start_count++] = true;
-            parenthesis_count++;
-        } else if (input_char == ')') {
-            parenthesis_end[parenthesis_end_count++] = true;
-            parenthesis_count++;
-        } else if (input_char == '{') {
-            brace_start[brace_start_count++] = true;
-            brace_count++;
-        } else if (input_char == '}') {
-            brace_end[brace_end_count++] = true;
-            brace_count++;
-        } else if (input_char == '[') {
-            bracket_start[bracket_start_count++] = true;
-            bracket_count++;
-        } else if (input_char == ']') {
-            bracket_end[bracket_end_count++] = true;
-            bracket_count++;
-        }
+        check_string(input_char);
     }
 
     if (parenthesis_start_count != parenthesis_end_count) {
@@ -142,5 +100,38 @@ void prompt_string() {
     } 
     if (!parenthesis_unbalanced && !brace_unbalanced && !bracket_unbalanced) {
         printf("Perfectly balanced, as all things should be.\n");
+    }
+}
+
+void check_string(char input_char) {
+    if (parenthesis_end[parenthesis_count] == true 
+        && parenthesis_start[parenthesis_count] == false) {
+        parenthesis_unbalanced = true;
+    } else if (brace_end[brace_count] == true
+        && brace_start[brace_count] == false) {
+        brace_unbalanced = true;
+    } else if (bracket_end[bracket_count] == true
+        && bracket_start[bracket_count] == false) {
+        bracket_unbalanced = true;
+    }
+
+    if (input_char == '(') {
+        parenthesis_start[parenthesis_start_count++] = true;
+        parenthesis_count++;
+    } else if (input_char == ')') {
+        parenthesis_end[parenthesis_end_count++] = true;
+        parenthesis_count++;
+    } else if (input_char == '{') {
+        brace_start[brace_start_count++] = true;
+        brace_count++;
+    } else if (input_char == '}') {
+        brace_end[brace_end_count++] = true;
+        brace_count++;
+    } else if (input_char == '[') {
+        bracket_start[bracket_start_count++] = true;
+        bracket_count++;
+    } else if (input_char == ']') {
+        bracket_end[bracket_end_count++] = true;
+        bracket_count++;
     }
 }
