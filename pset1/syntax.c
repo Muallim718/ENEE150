@@ -2,37 +2,22 @@
 #include <stdbool.h>
 #include <string.h>
 
-// Initialize parenthesis variables
-bool parenthesis_start[100] = {false};
-bool parenthesis_end[100] = {false};
-bool parenthesis_unbalanced = false;
-int parenthesis_count = 0;
-int parenthesis_start_count = 0;
-int parenthesis_end_count = 0;
-// Initialize curly brace variables
-bool brace_start[100] = {false};
-bool brace_end[100] = {false};
-bool brace_unbalanced = false;
-int brace_count = 0;
-int brace_start_count = 0;
-int brace_end_count = 0;
-// Initialize bracket variables
-bool bracket_start[100] = {false};
-bool bracket_end[100] = {false};
-bool bracket_unbalanced = false;
-int bracket_count = 0;
-int bracket_start_count = 0;
-int bracket_end_count = 0;
+#define SIZE 100
+
+typedef struct syntax_info {
+    bool start[SIZE];
+    bool end[SIZE];
+    bool unbalanced;
+    int count;
+    int start_count;
+    int end_count;
+} syntax_info;
 
 int string_length = 0;
-bool parenthesis_start[100];
 
-void check_syntax();
-void count_syntax(char string[]);
-void print_answers();
-void reset_parenthesis(bool arr[]);
-void reset_brace(bool arr[]);
-void reset_bracket(bool arr[]);
+void check_syntax(syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket);
+void count_syntax(char string[], syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket);
+void print_answers(syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket);
 int read_string(char string[]);
 
 int main() {
@@ -49,136 +34,103 @@ int main() {
         }
         char resized_string[string_length];
         strcpy(resized_string, string);
-        count_syntax(resized_string);
-        check_syntax();
-        print_answers();
-        reset_parenthesis(parenthesis_start);
-        reset_parenthesis(parenthesis_end);
-        reset_brace(brace_start);
-        reset_brace(brace_end);
-        reset_bracket(bracket_start);
-        reset_bracket(bracket_end);
-        parenthesis_count = 0;
-        parenthesis_start_count = 0;
-        parenthesis_end_count = 0;
-        brace_count = 0;
-        brace_start_count = 0;
-        brace_end_count = 0;
-        bracket_count = 0;
-        bracket_start_count = 0;
-        bracket_end_count = 0;
+        syntax_info parenthesis = {false};
+        syntax_info brace = {false};
+        syntax_info bracket = {false};
+        count_syntax(resized_string, &parenthesis, &brace, &bracket);
+        check_syntax(&parenthesis, &brace, &bracket);
+        print_answers(&parenthesis, &brace, &bracket);
     }
     printf("EOF character entered, exiting program now.\n");
     
     return 0;
 }
 
-void check_syntax() {
-    if (parenthesis_start_count != parenthesis_end_count) {
-        parenthesis_unbalanced = true;
+void check_syntax(syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket) {
+    if (parenthesis -> start_count != parenthesis -> end_count) {
+        parenthesis -> unbalanced = true;
     } else {
-        for (int i = 0; i < parenthesis_count / 2; i++) {
-            if (parenthesis_start[i] != parenthesis_end[i]) {
-                parenthesis_unbalanced = true;
+        for (int i = 0; i < (parenthesis -> count) / 2; i++) {
+            if (parenthesis -> start[i] != parenthesis -> end[i]) {
+                parenthesis -> unbalanced = true;
             }
         }
     }
 
-    if (brace_start_count != brace_end_count) {
-        brace_unbalanced = true;
+    if (brace -> start_count != brace -> end_count) {
+        brace -> unbalanced = true;
     } else {
-        for (int i = 0; i < brace_count / 2; i++) {
-            if (brace_start[i] != brace_end[i]) {
-                brace_unbalanced = true;
+        for (int i = 0; i < (brace -> count) / 2; i++) {
+            if (brace -> start[i] != brace -> end[i]) {
+                brace -> unbalanced = true;
             }
         }
     } 
     
-    if (bracket_start_count != bracket_end_count) {
-        bracket_unbalanced = true;
+    if (bracket -> start_count != bracket -> end_count) {
+        bracket -> unbalanced = true;
     } else {
-        for (int i = 0; i < bracket_count / 2; i++) {
-            if (bracket_start[i] != bracket_end[i]) {
-                bracket_unbalanced = true;
+        for (int i = 0; i < (bracket -> count) / 2; i++) {
+            if (bracket -> start[i] != bracket -> end[i]) {
+                bracket -> unbalanced = true;
             }
         }
     }
 }
 
-void count_syntax(char string[]) {
+void count_syntax(char string[], syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket) {
     for (int i = 0; i < string_length; i++) {
         if (string[i] == '(') {
-            parenthesis_start[parenthesis_start_count++] = true;
-            parenthesis_count++;
+            parenthesis -> start[parenthesis -> start_count] = true;
+            parenthesis -> start_count++;
         } else if (string[i] == ')') {
-            parenthesis_end[parenthesis_end_count++] = true;
-            parenthesis_count++;
+            parenthesis -> end[parenthesis -> end_count] = true;
+            parenthesis -> end_count++;
         } else if (string[i] == '{') {
-            brace_start[brace_start_count++] = true;
-            brace_count++;
+            brace -> start[brace -> start_count] = true;
+            brace -> start_count++;
         } else if (string[i] == '}') {
-            brace_end[brace_end_count++] = true;
-            brace_count++;
+            brace -> end[brace -> end_count] = true;
+            brace -> end_count++;
         } else if (string[i] == '[') {
-            bracket_start[bracket_start_count++] = true;
-            bracket_count++;
+            bracket -> start[bracket -> start_count] = true;
+            bracket -> start_count++;
         } else if (string[i] == ']') {
-            bracket_end[bracket_end_count++] = true;
-            bracket_count++;
+            brace -> end[brace -> end_count] = true;
+            brace -> end_count++;
         }
         
-        for (int i = 0; i < parenthesis_count; i++) {
-            if (parenthesis_end[i] == true && parenthesis_start[i] == false) {
-                parenthesis_unbalanced = true;
+        for (int i = 0; i < parenthesis -> count; i++) {
+            if (parenthesis -> end[i] == true && parenthesis -> start[i]) {
+                parenthesis -> unbalanced = true;
             }
         }
     
-        for (int i = 0; i < brace_count; i++) {
-            if (brace_end[i] == true && brace_start[i] == false) {
-                brace_unbalanced = true;
+        for (int i = 0; i < brace -> count; i++) {
+            if (brace -> end[i] == true && brace -> start[i]) {
+                brace -> unbalanced = true;
             }
         }
 
-        for (int i = 0; i < bracket_count; i++) {
-            if (bracket_end[i] == true && bracket_start[i] == false) {
-                bracket_unbalanced = true;
+        for (int i = 0; i < bracket -> count; i++) {
+            if (bracket -> end[i] == true && bracket -> start[i]) {
+                bracket -> unbalanced = true;
             }
         }
     }
 }
 
-void reset_parenthesis(bool arr[]) {
-    parenthesis_unbalanced = false;
-    for (int i = 0; i < parenthesis_count; i++) {
-        arr[i] = false;
-    }
-}
-
-void reset_brace(bool arr[]) {
-    brace_unbalanced = false;
-    for (int i = 0; i < brace_count; i++) {
-        arr[i] = false;
-    }
-}
-
-void reset_bracket(bool arr[]) {
-    bracket_unbalanced = false;
-    for (int i = 0; i < bracket_count; i++) {
-        arr[i] = false;
-    }
-}
-
-void print_answers() {
-    if (parenthesis_unbalanced) {
+void print_answers(syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket) {
+    if (parenthesis -> unbalanced) {
         printf("Parentheses are unbalanced!\n");
     } 
-    if (brace_unbalanced) {
+    if (brace -> unbalanced) {
         printf("Curly brackets are unbalanced!\n");
     } 
-    if (bracket_unbalanced) {
+    if (bracket -> unbalanced) {
         printf("Square brackets are unbalanced!\n");
     } 
-    if (!parenthesis_unbalanced && !brace_unbalanced && !bracket_unbalanced) {
+    if (!(parenthesis -> unbalanced) && !(brace -> unbalanced) && !(bracket -> unbalanced)) {
         printf("Perfectly balanced, as all things should be.\n");
     }
 }

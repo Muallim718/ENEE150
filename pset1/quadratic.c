@@ -39,7 +39,6 @@ int main() {
     // If the discriminant is negative
     } else if (discriminant < 0) {
         float real_part = (-1 * b_float) / (2 * a_float);
-        printf("Real part: %0.3f\n", real_part);
         float imaginary_part = sqrt(abs(discriminant)) / (2 * a_float);
         printf("The solutions to the quadratic equation are as follows: \n");
         printf("Root: %0.3f + j%0.3f\n", real_part, imaginary_part);
