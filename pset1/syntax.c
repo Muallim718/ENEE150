@@ -18,11 +18,15 @@ int string_length = 0;
 void check_syntax(syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket);
 void count_syntax(char string[], syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket);
 void print_answers(syntax_info *parenthesis, syntax_info *brace, syntax_info *bracket);
+void reset(syntax_info *character);
 int read_string(char string[]);
 
 int main() {
     printf("Enter text, enter EOF to end the program.\n");
     // Continue checking user for a line to be reversed until EOF is entered
+    syntax_info parenthesis;
+    syntax_info brace;
+    syntax_info bracket;
     while (true) {
 
         char string[1000];
@@ -34,9 +38,7 @@ int main() {
         }
         char resized_string[string_length];
         strcpy(resized_string, string);
-        syntax_info parenthesis = {false};
-        syntax_info brace = {false};
-        syntax_info bracket = {false};
+        reset(&parenthesis), reset(&brace), reset(&bracket);
         count_syntax(resized_string, &parenthesis, &brace, &bracket);
         check_syntax(&parenthesis, &brace, &bracket);
         print_answers(&parenthesis, &brace, &bracket);
@@ -96,24 +98,24 @@ void count_syntax(char string[], syntax_info *parenthesis, syntax_info *brace, s
             bracket -> start[bracket -> start_count] = true;
             bracket -> start_count++;
         } else if (string[i] == ']') {
-            brace -> end[brace -> end_count] = true;
-            brace -> end_count++;
+            bracket -> end[bracket -> end_count] = true;
+            bracket -> end_count++;
         }
         
         for (int i = 0; i < parenthesis -> count; i++) {
-            if (parenthesis -> end[i] == true && parenthesis -> start[i]) {
+            if (parenthesis -> end[i] == true && parenthesis -> start[i] == false) {
                 parenthesis -> unbalanced = true;
             }
         }
     
         for (int i = 0; i < brace -> count; i++) {
-            if (brace -> end[i] == true && brace -> start[i]) {
+            if (brace -> end[i] == true && brace -> start[i] == false) {
                 brace -> unbalanced = true;
             }
         }
 
         for (int i = 0; i < bracket -> count; i++) {
-            if (bracket -> end[i] == true && bracket -> start[i]) {
+            if (bracket -> end[i] == true && bracket -> start[i] == false) {
                 bracket -> unbalanced = true;
             }
         }
@@ -133,6 +135,17 @@ void print_answers(syntax_info *parenthesis, syntax_info *brace, syntax_info *br
     if (!(parenthesis -> unbalanced) && !(brace -> unbalanced) && !(bracket -> unbalanced)) {
         printf("Perfectly balanced, as all things should be.\n");
     }
+}
+
+void reset(syntax_info *character) {
+    for (int i = 0; i < SIZE; i++) {
+        character -> start[i] = false;
+        character -> end[i] = false; 
+    }
+    character -> unbalanced = false;
+    character -> start_count = 0;
+    character -> end_count = 0;
+    character -> count = 0;
 }
 
 int read_string(char string[]) {
