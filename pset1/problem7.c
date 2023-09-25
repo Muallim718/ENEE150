@@ -8,14 +8,11 @@ int read_string(char string[]);
 int check_balance(char string[], char open_char, char end_char);
 
 int main() {
-    printf("Enter text, enter EOF to end the program.\n");
     // Continue checking user for a line to be reversed until EOF is entered
     while (true) {
         char string[1000];
-        printf("Enter string: ");
         int result = read_string(string);
         if (result == EOF) {
-            printf("\n");
             break;
         }
         int parenthesis_balance = check_balance(string, '(', ')');
@@ -23,19 +20,18 @@ int main() {
         int bracket_balance = check_balance(string, '[', ']');
 
         if (parenthesis_balance != 0) {
-            printf("Parentheses are unbalanced!\n");
+            printf("parentheses unbalanced!\n");
         }
         if ((curly_balance != 0)) {
-            printf("Curly braces are unbalanced!\n");
+            printf("curly brackets unbalanced!\n");
         }
         if ((bracket_balance != 0)) {
-            printf("Square brackets are unbalanced!\n");
+            printf("square brackets unbalanced!\n");
         }
         if (parenthesis_balance == 0 && curly_balance == 0 && bracket_balance == 0) {
             printf("Perfectly balanced, as all things should be.\n");
         }
     }
-    printf("EOF character entered, exiting program now.\n");
     
     return 0;
 }
