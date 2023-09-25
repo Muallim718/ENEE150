@@ -10,7 +10,6 @@ int main() {
     // Initialize char variable
     char c;
     // Read input from user
-    printf("Enter text: \n");
     while ((c = getchar()) != EOF) {
         // Increment count variables
         // ASCII for new line character
@@ -24,7 +23,6 @@ int main() {
             blank_counter++;
         }
     }
-    printf("\n");
     // Print count variables
     printf("Number of blanks counted: %i\n", blank_counter);
     printf("Number of tabs counted: %i\n", tab_counter);
