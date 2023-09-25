@@ -15,11 +15,12 @@ int main() {
         scanf("%d", &max_value);
     } while (max_value <= 0 || max_value > 100);
     // Fill the array w/ random numbers in the range of 1 to 100
-    for (int i = 0; i < arr_size; i++) {
+    int i = 0;
+    for (i = 0; i < arr_size; i++) {
         arr[i] = rand() % max_value + 1;
     }
     // Display the array
-    for (int i = 0; i < arr_size; i++) {
+    for (i = 0; i < arr_size; i++) {
         printf("%i ", arr[i]);
     }
     printf("\n");
@@ -29,11 +30,11 @@ int main() {
         scanf("%d", &increment_value);
     } while (increment_value < 1 || increment_value > 100);
     // Increment the array
-    for (int i = 0; i < arr_size; i++) {
+    for (i = 0; i < arr_size; i++) {
         arr[i] += increment_value;
     }
     // Display the array
-    for (int i = 0; i < arr_size; i++) {
+    for (i = 0; i < arr_size; i++) {
         printf("%i ", arr[i]);
     }
     printf("\n");

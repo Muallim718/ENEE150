@@ -29,7 +29,8 @@ int main() {
 }
 
 void reverse_string(char string[], int length) {
-    for (int i = 0; i < length / 2; i++) {
+    int i;
+    for (i = 0; i < length / 2; i++) {
         char temp = string[i];
         string[i] = string[length - i - 1];
         string[length - i - 1] = temp;

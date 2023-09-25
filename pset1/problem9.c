@@ -14,7 +14,8 @@ int main() {
     do {
         scanf("%d", &max_value);
     } while (max_value <= 0 || max_value > 100);
-    for (int i = 0; i < row_size; i++) {
+    int i;
+    for (i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
             arr[i][j] = rand() % max_value + 1;
         }
@@ -25,13 +26,13 @@ int main() {
         scanf("%d", &increment_value);
     } while (increment_value < 1 || increment_value > 100);
     // Increment the array
-    for (int i = 0; i < row_size; i++) {
+    for (i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
             arr[i][j] += increment_value;
         }
     }
     // Display the array
-    for (int i = 0; i < row_size; i++) {
+    for (i = 0; i < row_size; i++) {
         for (int j = 0; j < col_size; j++) {
             printf("%i ", arr[i][j]);
         }

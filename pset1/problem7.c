@@ -38,7 +38,8 @@ int main() {
 
 int check_balance(char string[], char open_char, char end_char) {
     int count = 0;
-    for (int i = 0; i < string_length; i++) {
+    int i;
+    for (i = 0; i < string_length; i++) {
         if (string[i] == open_char) {
             count++;
         } else if (string[i] == end_char) {

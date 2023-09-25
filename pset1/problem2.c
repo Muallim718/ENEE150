@@ -38,9 +38,11 @@ int main() {
     int space_amount = 8;
     int top_row = 1; 
 
-    for (int i = 0; i < table_rows; i++) {
+    int i;
+    for (i = 0; i < table_rows; i++) {
         if (i % 2 == 0) {
-            for (int j = 0; j < table_col; j++) {
+            int j;
+            for (j = 0; j < table_col; j++) {
                 printf("-");
             }
             printf("\n");
@@ -66,7 +68,8 @@ int main() {
 }
 
 void print_celsius_spaces() {
-    for (int i = 0; i < celsius_spaces; i++) {
+    int i;
+    for (i = 0; i < celsius_spaces; i++) {
         printf(" ");
     }
 }
@@ -84,7 +87,8 @@ void print_celsius_value(int celsius_temp) {
 }
 
 void print_fahrenheit_spaces() {
-    for (int i = 0; i < fahrenheit_spaces; i++) {
+    int i;
+    for (i = 0; i < fahrenheit_spaces; i++) {
         printf(" ");
     }
 }
