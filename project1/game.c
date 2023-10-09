@@ -16,10 +16,11 @@ int check_choice(int grid[][COL_SIZE], int choice);
 void print_board(int grid[][COL_SIZE]);
 
 int main(void) {
-    // Initialize the array
+    /* Initialize the array */
     int grid[ROW_SIZE][COL_SIZE];
-    for (int i = 0; i < ROW_SIZE; i++) {
-        for (int j = 0; j < COL_SIZE; j++) {
+    int i, j;
+    for (i = 0; i < ROW_SIZE; i++) {
+        for (j = 0; j < COL_SIZE; j++) {
             grid[i][j] = '.';
         }
     }
@@ -37,7 +38,7 @@ int main(void) {
     }
     int result = 0;
     while (result == 0) {
-        // Prompt user 1 for placement of choice
+        /* Prompt user 1 for placement of choice */
         printf("Player 1, enter coordinates.\n");
         int row_pos_one, col_pos_one;
         do {
@@ -47,18 +48,18 @@ int main(void) {
         pos[row_pos_one][col_pos_one] = true;
         grid[row_pos_one][col_pos_one] = choice_one;
         print_board(grid);
-        // Check after every turn
-        // Check for in the case if the win is a one square difference
+        /* Check after every turn */
+        /* Check for in the case if the win is a one square difference */
         result = check_win(grid, choice_one, choice_two);
         if (result == 1) {
             return 0;
         }
-        // If there are no empty squares left and no win, we have a tie
+        /* If there are no empty squares left and no win, we have a tie */
         if (check_empty()) {
             printf("Tie!\n");
             return 0;
         }
-        // Prompt user 2 for placement of choice
+        /* Prompt user 2 for placement of choice */
         printf("Player 2, enter coordinates.\n");
         int row_pos_two, col_pos_two;
         do {
@@ -74,11 +75,12 @@ int main(void) {
 }
 
 void print_board(int grid[][COL_SIZE]) {
-    // Clear console
+    /* Clear console */
     printf("\033[H\033[J");
-    // Print table
-    for(int i = 0; i < ROW_SIZE; i++) {
-        for (int j = 0; j < COL_SIZE; j++) {
+    /* Print table */
+    int i, j;
+    for(i = 0; i < ROW_SIZE; i++) {
+        for (j = 0; j < COL_SIZE; j++) {
             printf(" %c |", grid[i][j]);
         }
         printf("\n------------\n");
@@ -88,23 +90,23 @@ void print_board(int grid[][COL_SIZE]) {
 int check_win(int grid[][COL_SIZE], int choice_one, int choice_two) {
     int x = 'x';
     int o = 'o';
-    // Determine whether x or o won
+    /* Determine whether x or o won */
     int x_result = check_choice(grid, x);
     int o_result = check_choice(grid, o);
-    // If x won
+    /* If x won */
     if (x_result == 1) {
-        // Determine which player had x
-        // Print the winner
+        /* Determine which player had x */
+        /* Print the winner */
         if (choice_one = x) {
             printf("Player one won!\n");
         } else if (choice_two = x) {
             printf("Player two won!\n");
         }
         return 1;
-    // If o won
+    /* If o won */
     } else if (o_result == 1) {
-        // Determine which player had o
-        // Printer the winner
+        /* Determine which player had o */
+        /* Printer the winner */
         if (choice_one = o) {
             printf("Player one won!\n");
         } else if (choice_two = o) {
@@ -112,19 +114,20 @@ int check_win(int grid[][COL_SIZE], int choice_one, int choice_two) {
         }
         return 1;
     }
-    // If none of the above, continue the game
+    /* If none of the above, continue the game */
     return 0;
 }
 
 int check_choice(int grid[][COL_SIZE], int choice) {
     int diagonal = 0;
     int opp_diagonal = 0;
-    // Check for vertical, horizontal, and diagonal wins
-    for (int i = 0; i < ROW_SIZE; i++) {
+    /* Check for vertical, horizontal, and diagonal wins */
+    int i, j;
+    for (i = 0; i < ROW_SIZE; i++) {
         int vertical = 0;
         int horizontal = 0;
         int opp_diagonal_pos = 2;
-        for (int j = 0; j < COL_SIZE; j++) {
+        for (j = 0; j < COL_SIZE; j++) {
             if (grid[i][j] == choice) {
                 horizontal++;
             }
@@ -147,8 +150,9 @@ int check_choice(int grid[][COL_SIZE], int choice) {
 
 bool check_empty() {
     int count = 0;
-    for (int i = 0; i < ROW_SIZE; i++) {
-        for (int j = 0; j < COL_SIZE; j++) {
+    int i, j;
+    for (i = 0; i < ROW_SIZE; i++) {
+        for (j = 0; j < COL_SIZE; j++) {
             if (pos[i][j] == true) {
                 count++;
             }
