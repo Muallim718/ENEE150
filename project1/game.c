@@ -4,13 +4,13 @@
 #define ROW_SIZE 3
 #define COL_SIZE 3
 
-int get_row_pos(void);
-int get_col_pos(void);
-bool check_empty();
-
 bool pos[ROW_SIZE][COL_SIZE];
 
+bool check_empty();
 bool verify_square(int row_position, int col_position);
+bool in_range(int pos);
+int get_row_pos(int pos);
+int get_row_col(int pos);
 int check_win(int grid[][COL_SIZE], int choice_one, int choice_two);
 int check_choice(int grid[][COL_SIZE], int choice);
 void print_board(int grid[][COL_SIZE]);
@@ -19,9 +19,10 @@ int main(void) {
     /* Initialize the array */
     int grid[ROW_SIZE][COL_SIZE];
     int i, j;
+    int count = 49;
     for (i = 0; i < ROW_SIZE; i++) {
         for (j = 0; j < COL_SIZE; j++) {
-            grid[i][j] = '.';
+            grid[i][j] = count++;
         }
     }
     printf("Player 1, choose enter either 'x' or 'o'.\n");
@@ -40,12 +41,17 @@ int main(void) {
     while (result == 0) {
         /* Prompt user 1 for placement of choice */
         printf("Player 1, enter coordinates.\n");
+        print_board(grid);
+        int pos_one = 0;
         int row_pos_one, col_pos_one;
         do {
-            row_pos_one = get_row_pos();
-            col_pos_one = get_col_pos();
-        } while (verify_square(row_pos_one, col_pos_one));
-        pos[row_pos_one][col_pos_one] = true;
+            pos_one = get_pos();
+            if (in_range(pos_one)) {
+                row_pos_one = get_row_pos(pos_one);
+                col_pos_one = get_col_pos(pos_one);
+            } 
+        } while (in_range(pos_one) == 0 || verify_square(row_pos_one, col_pos_one));
+        pos[row_pos_one][col_pos_one] = true; 
         grid[row_pos_one][col_pos_one] = choice_one;
         print_board(grid);
         /* Check after every turn */
@@ -61,11 +67,15 @@ int main(void) {
         }
         /* Prompt user 2 for placement of choice */
         printf("Player 2, enter coordinates.\n");
+        int pos_two = 0;
         int row_pos_two, col_pos_two;
         do {
-            row_pos_two = get_row_pos();
-            col_pos_two = get_col_pos();
-        } while(verify_square(row_pos_two, col_pos_two));
+            pos_two = get_pos();
+            if (in_range(pos_two)) {
+                row_pos_two = get_row_pos(pos_two);
+                col_pos_two = get_col_pos(pos_two);
+            }
+        } while(in_range(pos_two) == 0 || verify_square(row_pos_two, col_pos_two));
         pos[row_pos_two][col_pos_two] = true; 
         grid[row_pos_two][col_pos_two] = choice_two;
         print_board(grid);
@@ -168,18 +178,36 @@ bool verify_square(int row_position, int col_position) {
     return pos[row_position][col_position];
 }
 
-int get_row_pos(void) {
-    int row_pos;
-    do {
-        printf("Enter row position (0, 1, or 2): ");
-        scanf("%d", &row_pos);
-    } while (row_pos < 0 || row_pos > 2);
+int get_row_pos(int pos) {
+    if (pos >= 1 && pos <= 3) {
+        return 0;
+    } else if (pos >= 4 && pos <= 7) {
+        return 1;
+    } else {
+        return 2;
+    }
+    return 0;
 }
 
-int get_col_pos(void) {
-    int col_pos;
+int get_col_pos(int pos) {
+    if (pos >= 1 && pos <= 3) {
+        return pos - 1;
+    } else if (pos >= 4 && pos <= 7) {
+        return pos - 4;
+    } else {
+        return pos - 7;
+    }
+    return 0;
+}
+
+int get_pos(void) {
+    int pos;
     do {
-        printf("Enter col position (0, 1, or 2): ");
-        scanf("%d", &col_pos);
-    } while (col_pos < 0 || col_pos > 2);
+        printf("Enter position on the grid (From 1 to 9): ");
+        scanf("%d", &pos);
+    } while (pos < 0 || pos > 9);
+}
+
+bool in_range(int pos) {
+    return pos >= 1 && pos <= 9;
 }
