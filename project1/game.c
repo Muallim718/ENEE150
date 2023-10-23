@@ -107,9 +107,9 @@ int check_win(int grid[][COL_SIZE], int choice_one, int choice_two) {
     if (x_result == 1) {
         /* Determine which player had x */
         /* Print the winner */
-        if (choice_one = x) {
+        if (choice_one == x) {
             printf("Player one won!\n");
-        } else if (choice_two = x) {
+        } else if (choice_two == x) {
             printf("Player two won!\n");
         }
         return 1;
@@ -117,9 +117,9 @@ int check_win(int grid[][COL_SIZE], int choice_one, int choice_two) {
     } else if (o_result == 1) {
         /* Determine which player had o */
         /* Printer the winner */
-        if (choice_one = o) {
+        if (choice_one == o) {
             printf("Player one won!\n");
-        } else if (choice_two = o) {
+        } else if (choice_two == o) {
             printf("Player two won!\n");
         }
         return 1;
