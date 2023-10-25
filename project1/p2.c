@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define BUFFER 100
-
 float *compute_average(float **grades, float *highest_grades, 
                        int num_students, int num_tests);
 
@@ -39,7 +37,7 @@ int main(void) {
             name = (char *) realloc(name, (count + 1) * sizeof(char));
             if (name == NULL) {
                 printf("Seg fault danger 3.\n");
-            return 1;
+                return 1;
             }
         }
         *(name + count) = '\0';
@@ -50,8 +48,16 @@ int main(void) {
     int num_tests = 4;
     float **grades;
     grades = (float **) malloc(num_students * sizeof(float*));
+    if (grades == NULL) {
+        printf("Seg fault danger 4.\n");
+        return 1;
+    }
     for (i = 0; i < num_students; i++) {
         grades[i] = (float *) malloc(num_tests * sizeof(float));
+        if (grades[i] == NULL) {
+            printf("Seg fault danger 5.\n");
+            return 1;
+        }
     }
     for (i = 0; i < num_students; i++) {
         printf("Input grades for %s\n", students[i]);
@@ -69,6 +75,10 @@ int main(void) {
     float *highest_grades;
     float max_grade = 0.0;
     highest_grades = (float *) malloc(num_students * sizeof(float));
+    if (highest_grades == NULL) {
+        printf("Seg fault 6.\n");
+        return 1;
+    }
 
     for (i = 0; i < num_students; i++) {
         max_grade = 0.0;
@@ -111,12 +121,23 @@ int main(void) {
     return 0;
 }
 
+int greatest_string_length(char** students, int num_students) {
+    int i, j;
+    int max = strlen(students[0]);
+    for (i = 0; i < num_students; i++) {
+        if (strlen(students[i]) > max) {
+            max = strlen(students[i]);
+        }
+    }
+    return max;
+}
+
 void display_scores(char** students, float **grades, float *highest_grades) {
     int count = 0;
     int num_students = 5;
     int num_test = 4;
-    int spacing = 20;
-    int i, j;
+    int spacing = greatest_string_length(students, num_students) + 2;
+    int i, j, k;
     /* Table header */
     printf("Names");
     for (i = 0; i < spacing - strlen("Names"); i++) {
@@ -135,7 +156,18 @@ void display_scores(char** students, float **grades, float *highest_grades) {
             printf(" ");
         }
         for (j = 0; j < num_test; j++) {
-            printf("%i      ", (int) grades[i][j]);
+            int digit = (int) grades[i][j];
+            int digit_size = 0;
+            if (digit == 0) {
+                digit_size = 1;
+            } else {
+                digit_size = floor(log10(digit)) + 1;
+            }
+            int digit_spacing = 8;
+            printf("%i", (int) grades[i][j]);
+            for (k = 0; k < digit_spacing - digit_size; k++) {
+                printf(" ");
+            }
         }
         printf("  ");
         printf("%i", (int) highest_grades[i]);
@@ -147,7 +179,7 @@ void display_final(char** students, float *average_scores, char *final_grades) {
     int count = 0;
     int num_students = 5;
     int num_test = 4;
-    int spacing = 20;
+    int spacing = greatest_string_length(students, num_students) + 2;
     int i, j;
     /* Table header */
     printf("Names");
@@ -164,11 +196,21 @@ void display_final(char** students, float *average_scores, char *final_grades) {
         for (j = 0; j < spacing_amount; j++) {
             printf(" ");
         }
-        printf("%0.1f    ", average_scores[i]);
-        printf("%c    ", final_grades[i]);
+        printf("%0.1f", average_scores[i]);
+        int digit = (int) average_scores[i];
+        int digit_size = 0;
+        if (digit == 0) {
+            digit_size = 1;
+        } else {
+            digit_size = floor(log10(digit)) + 1;
+        }
+        int digit_spacing = 6;
+        for (j = 0; j < digit_spacing - digit_size; j++) {
+            printf(" ");
+        }
+        printf("%c", final_grades[i]);
         printf("\n");
-    } 
-    printf("\n");
+    }
 }
 
 float *compute_average(float **grades, float *highest_grades, 
@@ -195,7 +237,7 @@ char *determine_grades(float *average_scores, int num_students) {
     char *final_grades;
     final_grades = (char *) malloc(num_students * sizeof(char) + 1);
     for (i = 0; i < num_students; i++) {
-        int rounded_answer = (int) average_scores[i];
+        int rounded_answer = (int) (average_scores[i] + 0.5);
         if (rounded_answer >= 90 && rounded_answer <= 100) {
             final_grades[i] = 'A';
         } else if (rounded_answer >= 80 && rounded_answer <= 89) {
