@@ -7,8 +7,11 @@ float *compute_average(float **grades, float *highest_grades,
 
 char *determine_grades(float *average_scores, int num_students);
 
+void display_scores(char** students, float **grades, float *highest_grades);
+
+void display_final(char** students, float *average_scores, char *final_grades);
+
 int main(void) {
-    /* Initialize name array */
     int num_students = 5;
     int i, j;
     char **students;
@@ -63,13 +66,8 @@ int main(void) {
 
     char *final_grades = determine_grades(average_scores, num_students);
 
-    for (i = 0; i < num_students; i++) {
-        printf("%0.2f\n", average_scores[i]);
-    }
-
-    for (i = 0; i < num_students; i++) {
-        printf("%c\n", final_grades[i]);
-    }
+    display_scores(students, grades, highest_grades);
+    display_final(students, average_scores, final_grades);
 
     /* Free final grades array*/
     free(final_grades);
@@ -92,6 +90,64 @@ int main(void) {
     }
     free(students);
     return 0;
+}
+
+void display_scores(char** students, float **grades, float *highest_grades) {
+    int count = 0;
+    int num_students = 5;
+    int num_test = 4;
+    int spacing = 20;
+    int i, j;
+    /* Table header */
+    printf("Names");
+    for (i = 0; i < spacing - strlen("Names"); i++) {
+        printf(" ");
+    }
+    for (i = 0; i < num_test; i++) {
+        printf("Test %i  ", i + 1);
+    }
+    printf("  Highest Score");
+    printf("\n");
+    /* Student info */
+    for (i = 0; i < num_students; i++) {
+        printf("%s", students[i]);
+        for (j = 0; j < spacing - strlen(students[i]); j++) {
+            printf(" ");
+        }
+        for (j = 0; j < num_test; j++) {
+            printf("%i      ", (int) grades[i][j]);
+        }
+        printf("  ");
+        printf("%i", (int) highest_grades[i]);
+        printf("\n");
+    }
+}
+
+void display_final(char** students, float *average_scores, char *final_grades) {
+    int count = 0;
+    int num_students = 5;
+    int num_test = 4;
+    int spacing = 20;
+    int i, j;
+    /* Table header */
+    printf("Names");
+    for (i = 0; i < spacing - strlen("Names"); i++) {
+        printf(" ");
+    }
+    printf("Average");
+    printf(" Grade");
+    printf("\n");
+    /* Student info */
+    for (i = 0; i < num_students; i++) {
+        printf("%s", students[i]);
+        for (j = 0; j < spacing - strlen(students[i]); j++) {
+            printf(" ");
+        }
+        printf("%0.1f    ", average_scores[i]);
+        printf("%c    ", final_grades[i]);
+        printf("\n");
+    } 
+    printf("\n");
 }
 
 float *compute_average(float **grades, float *highest_grades, 
@@ -127,7 +183,7 @@ char *determine_grades(float *average_scores, int num_students) {
         } else if (average_scores[i] >= 60 && average_scores[i] <= 69) {
             final_grades[i] = 'D';
         } else {
-            final_grades[i] = 'E';
+            final_grades[i] = 'F';
         }
     }
 
