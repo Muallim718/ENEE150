@@ -1,0 +1,23 @@
+Student 1 Name:
+Student 1 Scores:
+Student 2 Name:
+Student 2 Scores:
+Student 3 Name:
+Student 3 Scores:
+Student 4 Name:
+Student 4 Scores:
+Student 5 Name:
+Student 5 Scores:
+Names		Test 1	Test 2	Test 3	Test 4	Highest Score
+John Smith 	85 	89 	79 	82 	89
+Latasha Green 	79 	82 	73 	75 	82
+David Williams 	62 	64 	71 	70 	71
+Albert James 	55 	60 	54 	62 	62
+Nicole Johnson	95 	92 	88 	91 	95
+
+Name 		Average	Grade
+John Smith 	84.8 	B
+Latasha Green 	78.2 	C
+David Williams 	67.6 	D
+Albert James 	58.6 	F
+Nicole Johnson 	92.2 	A

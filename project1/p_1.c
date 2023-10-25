@@ -25,23 +25,18 @@ int main(void) {
             grid[i][j] = count++;
         }
     }
-    printf("Player 1, choose enter either 'x' or 'o'.\n");
-    char choice_one;
-    do {
-            scanf("%c", &choice_one);
-    } while(choice_one != 'x' && choice_one != 'o');
-    printf("Player 2, you're left with the other choice.\n");
-    char choice_two;
-    if (choice_one == 'x') {
-        choice_two = 'o';
-    } else if (choice_one == 'o') {
-        choice_two = 'x';
+    char choice_one = 'x';
+    char choice_two = 'o';
+    print_board(grid);
+    for (i = 0; i < ROW_SIZE; i++) {
+        for (j = 0; j < COL_SIZE; j++) {
+            grid[i][j] = 32;
+        }
     }
     int result = 0;
     while (result == 0) {
         /* Prompt user 1 for placement of choice */
         printf("Player 1, enter coordinates.\n");
-        print_board(grid);
         int pos_one = 0;
         int row_pos_one, col_pos_one;
         do {
@@ -62,7 +57,7 @@ int main(void) {
         }
         /* If there are no empty squares left and no win, we have a tie */
         if (check_empty()) {
-            printf("Tie!\n");
+            printf("It's a Tie!\n");
             return 0;
         }
         /* Prompt user 2 for placement of choice */
@@ -85,8 +80,6 @@ int main(void) {
 }
 
 void print_board(int grid[][COL_SIZE]) {
-    /* Clear console */
-    printf("\033[H\033[J");
     /* Print table */
     int i, j;
     for(i = 0; i < ROW_SIZE; i++) {
@@ -108,9 +101,9 @@ int check_win(int grid[][COL_SIZE], int choice_one, int choice_two) {
         /* Determine which player had x */
         /* Print the winner */
         if (choice_one == x) {
-            printf("Player one won!\n");
+            printf("Player 1 Wins!\n");
         } else if (choice_two == x) {
-            printf("Player two won!\n");
+            printf("Player 2 Wins!\n");
         }
         return 1;
     /* If o won */
@@ -118,9 +111,9 @@ int check_win(int grid[][COL_SIZE], int choice_one, int choice_two) {
         /* Determine which player had o */
         /* Printer the winner */
         if (choice_one == o) {
-            printf("Player one won!\n");
+            printf("Player 1 Wins!\n");
         } else if (choice_two == o) {
-            printf("Player two won!\n");
+            printf("Player 2 Wins!\n");
         }
         return 1;
     }
@@ -203,7 +196,7 @@ int get_col_pos(int pos) {
 int get_pos(void) {
     int pos;
     do {
-        printf("Enter position on the grid (From 1 to 9): ");
+        printf("Enter position on the grid (From 1 to 9):\n");
         scanf("%d", &pos);
     } while (pos < 0 || pos > 9);
 }
