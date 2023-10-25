@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
+
+#define BUFFER 100
 
 float *compute_average(float **grades, float *highest_grades, 
                        int num_students, int num_tests);
@@ -14,18 +17,34 @@ void display_final(char** students, float *average_scores, char *final_grades);
 int main(void) {
     int num_students = 5;
     int i, j;
+    int c;
     char **students;
+    char *name;
     students = (char **) malloc(num_students * sizeof(char*));
-    students[0] = (char *) malloc(strlen("John Smith") + 1);
-    strcpy(students[0], "John Smith");
-    students[1] = (char *) malloc(strlen("Latasha Green") + 1);
-    strcpy(students[1], "Latasha Green");
-    students[2] = (char *) malloc(strlen("David Williams") + 1);
-    strcpy(students[2], "David Williams");
-    students[3] = (char *) malloc(strlen("Albert James") + 1);
-    strcpy(students[3], "Albert James");
-    students[4] = (char *) malloc(strlen("Nicole Johnson") + 1);
-    strcpy(students[4], "Nicole James");
+    if (students == NULL) {
+        printf("Seg fault danger 1.\n");
+        return 1;
+    }
+
+    for (i = 0; i < num_students; i++) { 
+        printf("Enter name for student %i: ", i + 1);
+        name = (char *) malloc(sizeof(char));
+        if (name == NULL) {
+            printf("Seg fault danger 2.\n");
+            return 1;
+        }
+        int count = 0;
+        while((c = getchar()) != '\n') {
+            *(name + count++) = c;
+            name = (char *) realloc(name, (count + 1) * sizeof(char));
+            if (name == NULL) {
+                printf("Seg fault danger 3.\n");
+            return 1;
+            }
+        }
+        *(name + count) = '\0';
+        *(students + i) = name; 
+    }
 
     /* Initialize grades array */
     int num_tests = 4;
@@ -111,7 +130,8 @@ void display_scores(char** students, float **grades, float *highest_grades) {
     /* Student info */
     for (i = 0; i < num_students; i++) {
         printf("%s", students[i]);
-        for (j = 0; j < spacing - strlen(students[i]); j++) {
+        int spacing_amount = spacing - strlen(students[i]);
+        for (j = 0; j < spacing_amount; j++) {
             printf(" ");
         }
         for (j = 0; j < num_test; j++) {
@@ -140,7 +160,8 @@ void display_final(char** students, float *average_scores, char *final_grades) {
     /* Student info */
     for (i = 0; i < num_students; i++) {
         printf("%s", students[i]);
-        for (j = 0; j < spacing - strlen(students[i]); j++) {
+        int spacing_amount = spacing - strlen(students[i]);
+        for (j = 0; j < spacing_amount; j++) {
             printf(" ");
         }
         printf("%0.1f    ", average_scores[i]);
@@ -174,13 +195,14 @@ char *determine_grades(float *average_scores, int num_students) {
     char *final_grades;
     final_grades = (char *) malloc(num_students * sizeof(char) + 1);
     for (i = 0; i < num_students; i++) {
-        if (average_scores[i] >= 90 && average_scores[i] <= 100) {
+        int rounded_answer = (int) average_scores[i];
+        if (rounded_answer >= 90 && rounded_answer <= 100) {
             final_grades[i] = 'A';
-        } else if (average_scores[i] >= 80 && average_scores[i] <= 89) {
+        } else if (rounded_answer >= 80 && rounded_answer <= 89) {
             final_grades[i] = 'B';
-        } else if (average_scores[i] >= 70 && average_scores[i] <= 79) {
+        } else if (rounded_answer >= 70 && rounded_answer <= 79) {
             final_grades[i] = 'C';
-        } else if (average_scores[i] >= 60 && average_scores[i] <= 69) {
+        } else if (rounded_answer >= 60 && rounded_answer <= 69) {
             final_grades[i] = 'D';
         } else {
             final_grades[i] = 'F';
