@@ -8,9 +8,10 @@ float *compute_average(float **grades, float *highest_grades,
 
 char *determine_grades(float *average_scores, int num_students);
 
-void display_scores(char** students, float **grades, float *highest_grades);
+void display_scores(char** students, float **grades, float *highest_grades, 
+                    int num_students, int num_tests);
 
-void display_final(char** students, float *average_scores, char *final_grades);
+void display_final(char** students, float *average_scores, char *final_grades, int num_students);
 
 int main(void) {
     int num_students = 5;
@@ -95,8 +96,8 @@ int main(void) {
 
     char *final_grades = determine_grades(average_scores, num_students);
 
-    display_scores(students, grades, highest_grades);
-    display_final(students, average_scores, final_grades);
+    display_scores(students, grades, highest_grades, num_students, num_tests);
+    display_final(students, average_scores, final_grades, num_students);
 
     /* Free final grades array*/
     free(final_grades);
@@ -132,10 +133,9 @@ int greatest_string_length(char** students, int num_students) {
     return max;
 }
 
-void display_scores(char** students, float **grades, float *highest_grades) {
+void display_scores(char** students, float **grades, float *highest_grades, 
+                    int num_students, int num_tests) {
     int count = 0;
-    int num_students = 5;
-    int num_test = 4;
     int spacing = greatest_string_length(students, num_students) + 2;
     int i, j, k;
     /* Table header */
@@ -143,7 +143,7 @@ void display_scores(char** students, float **grades, float *highest_grades) {
     for (i = 0; i < spacing - strlen("Names"); i++) {
         printf(" ");
     }
-    for (i = 0; i < num_test; i++) {
+    for (i = 0; i < num_tests; i++) {
         printf("Test %i  ", i + 1);
     }
     printf("  Highest Score");
@@ -155,7 +155,7 @@ void display_scores(char** students, float **grades, float *highest_grades) {
         for (j = 0; j < spacing_amount; j++) {
             printf(" ");
         }
-        for (j = 0; j < num_test; j++) {
+        for (j = 0; j < num_tests; j++) {
             int digit = (int) grades[i][j];
             int digit_size = 0;
             if (digit == 0) {
@@ -175,10 +175,8 @@ void display_scores(char** students, float **grades, float *highest_grades) {
     }
 }
 
-void display_final(char** students, float *average_scores, char *final_grades) {
+void display_final(char** students, float *average_scores, char *final_grades, int num_students) {
     int count = 0;
-    int num_students = 5;
-    int num_test = 4;
     int spacing = greatest_string_length(students, num_students) + 2;
     int i, j;
     /* Table header */
