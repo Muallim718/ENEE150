@@ -13,7 +13,7 @@ void process_string(char *string, int string_length);
 
 int main(void) {
     int i;
-    char *string;
+    char *string = NULL;
     size_t buffer = 1000;
     printf("Enter 20+ words written in the form of digits.\n");
     size_t characters = getline(&string, &buffer, stdin);
@@ -45,7 +45,10 @@ void process_string(char *string, int string_length) {
     for (i = 0; i < string_length; i++) {
         if (string[i] != space && string[i] != '\n') {
             number[count++] = string[i];
-        } else if (string[i] == space || string[i] == '\0' || string[i] == '\n') {
+        } else if (string[i] == space || i + 1 == string_length || string[i] == '\n') {
+            if (i + 1 == string_length) {
+                count--;
+            }
             number[count] = '\0';
             for (j = 0; j < SIZE; j++) {
                 if (strcmp(digit_info[j].digit, number) == 0) {
@@ -64,4 +67,5 @@ void process_string(char *string, int string_length) {
     for (i = 0; i < SIZE; i++) {
         free(digit_info[i].digit);
     }
+    free(string);
 }

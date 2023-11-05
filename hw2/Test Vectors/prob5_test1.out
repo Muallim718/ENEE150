@@ -1,6 +1,7 @@
 input string:
+zero: 2
 one: 3
-two: 2
+two: 3
 three: 2
 four: 1
 five: 2
