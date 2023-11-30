@@ -13,8 +13,10 @@ typedef struct node {
     struct node *right;
 } Node;
 
-int debug = 0;
+
+int debug = 1;
 #define debug(args...) if (debug) printf(args)
+int person_found = 0;
 
 int AddNode(Node **root, char *input_name, char* input_num);
 Node *get_largest(Node **root);
@@ -22,33 +24,83 @@ Node *get_smallest(Node **root);
 int DeleteNode(Node **root, char *input_name);
 int DeleteAll(Node **root);
 void printTree(Node **root);
+void FindPerson(Node **root, char *input_name);
+void change_rightmost_leaf(Node **root, char *input_name);
+void DeleteLeftNode(Node **root);
 
 int main(void) {
     Node *root = NULL;
-    static char name[NAME_SIZE];
+    static char name1[NAME_SIZE];
+    static char name2[NAME_SIZE];
     char phone_num[PHONE_NUM_SIZE];
-    printf("Start of the program. Enter EOF to end program.\n");
-    while (true) {  
-        printf("Enter name: ");
-        int name_result = scanf("%s", name);
-        if (name_result == EOF) {
-            break;
-        }
-        int num_result = 0;
-        do {
-            printf("Enter phone number (###-###-####): ");
-            num_result = scanf("%s", phone_num);
-            if (num_result == EOF) {
-                break;
-            }
-        } while ((int) strlen(phone_num) != PHONE_NUM_SIZE);
-        AddNode(&root, name, phone_num);
+    printf("Building the tree.\n");
+    /* Part a */
+    /* Build the tree */
+    AddNode(&root, "John", "202-254-6958");
+    AddNode(&root, "Edward", "240-987-9875");
+    AddNode(&root, "Paul", "202-658-5687");
+    AddNode(&root, "Charles", "202-897-9875");
+    AddNode(&root, "Gerald", "202-987-6587");
+    AddNode(&root, "Brandon", "301-896-6785");
+    AddNode(&root, "David", "202-987-6587");
+    AddNode(&root, "Natasha", "202-548-6987");
+    AddNode(&root, "Victor", "240-458-6897");
+    AddNode(&root, "Same", "301-587-7895");
+    AddNode(&root, "Williams", "301-405-6587");
+    printTree(&root);
+    printf("\n");
+    /* Part b */
+    /* Find person */
+    printf("Enter a person's name from the phone book: ");
+    scanf("%s", name1);
+    FindPerson(&root, name1);
+    if (person_found != 1) {
+        printf("Person not found.\n");
     }
     printf("\n");
+    /* Part c*/
+    /* Change nood*/
+    printf("Enter a name to replace the rightmost leaf: ");
+    scanf("%s", name2);
+    change_rightmost_leaf(&root, name2);
     printTree(&root);
+    /* Part d*/
+    /* Delete left child of the root */
+    printf("\n");
+    printf("Remove left child of the root: ");
+    DeleteLeftNode(&root);
+    printTree(&root);
+
+
     DeleteAll(&root);
 
     return 0;
+}
+
+void DeleteLeftNode(Node **root) {
+    if (root) {
+        if (*root) {
+            char left_name[NAME_SIZE];
+            strcpy(left_name, (*root) -> left -> name);
+            printf("%s\n", left_name);
+            DeleteNode(&((*root) -> left), left_name);
+        }
+    }
+}
+
+void FindPerson(Node **root, char *input_name) {
+    if (root) {
+        if (*root) {
+            FindPerson(&((*root) -> left), input_name);
+            if (strcmp((*root) -> name, input_name) == 0) {
+                printf("Person found.\n");
+                printf("Name: %s\n", (*root) -> name);
+                printf("Phone number: %s\n", (*root) -> phone_num);
+                person_found = 1;
+            }
+            FindPerson(&((*root) -> right), input_name);
+        }
+    }
 }
 
 int AddNode(Node **root, char *input_name, char* input_num) {
@@ -86,6 +138,21 @@ int AddNode(Node **root, char *input_name, char* input_num) {
         }
     }
     return ret;
+}
+
+void change_rightmost_leaf(Node **root, char *input_name) {
+    if (root) {
+        if (*root) {
+            change_rightmost_leaf(&((*root) -> right), input_name);
+            if ((*root) -> right == NULL) {
+                free((*root) -> name);
+                (*root) -> name = (char*) malloc((int) strlen(input_name) + 1);
+                strcpy((*root) -> name, input_name);
+                (*root) -> name[(int) strlen(input_name)] = '\0';
+                return;
+            }   
+        }
+    }
 }
 
 Node *get_largest(Node **root) {
