@@ -27,6 +27,8 @@ void printTree(Node **root);
 void FindPerson(Node **root, char *input_name);
 void change_rightmost_leaf(Node **root, char *input_name);
 void DeleteLeftNode(Node **root);
+void deattachLeftSubtree(Node **root);
+Node *copyTree(Node **root);
 
 int main(void) {
     Node *root = NULL;
@@ -71,10 +73,51 @@ int main(void) {
     DeleteLeftNode(&root);
     printTree(&root);
 
+    printf("\n");
+    printf("Copy of the tree\n");
+    Node *temp = NULL;
+    AddNode(&root, &(root) -> name, &((*root)) -> phone_num);
+    /*
+    temp = copyTree(&root);
+    
+    printTree(&temp);
+    */
 
     DeleteAll(&root);
+    DeleteAll(&temp);
 
     return 0;
+}
+
+Node *copyTree(Node **root) {
+    Node *temp = NULL;
+
+    if (root) {
+        if (*root) {
+            char left_name[NAME_SIZE];
+            strcpy(left_name, (*root) -> left -> name);
+            char left_phone[NAME_SIZE];
+            strcpy(left_phone, (*root) -> left -> phone_num);
+
+            char right_name[NAME_SIZE];
+            strcpy(right_name, (*root) -> right -> name);
+            char right_phone[NAME_SIZE];
+            strcpy(right_phone, (*root) -> right -> phone_num);
+
+            AddNode(&((*root) -> left), left_name, left_phone);
+            AddNode(&((*root) -> right), right_name, right_phone);
+        }
+    }
+
+    return temp;
+}
+
+void deattachLeftSubtree(Node **root) {
+    if (root) {
+        while ((*root) -> left != NULL) {
+            DeleteLeftNode(root);
+        }
+    }
 }
 
 void DeleteLeftNode(Node **root) {
